@@ -4,13 +4,11 @@ import { NextRequest, NextResponse } from "next/server"
 
 export async function DELETE(
   req: NextRequest,
-  context: { params: { id: string } }
+  { params }: { params: { id: string } }
 ) {
   await connectDB()
 
-  const { id } = context.params
-
-  const deleted = await Transaction.findByIdAndDelete(id)
+  const deleted = await Transaction.findByIdAndDelete(params.id)
 
   if (!deleted) {
     return NextResponse.json({ error: "Transaction not found" }, { status: 404 })
