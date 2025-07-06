@@ -11,7 +11,7 @@ export async function DELETE(
   const url = new URL(req.url);
   const id = url.pathname.split("/").pop();
 
-  
+
   if (!id) {
     return NextResponse.json({ error: "Transaction ID is required" }, { status: 400 })
   }
@@ -26,9 +26,16 @@ export async function DELETE(
   return NextResponse.json({ message: "Transaction deleted" })
 }
 
-export async function PATCH(req: Request,
-    context: { params: { id: string } }) {
-  const { id } = context.params
+export async function PATCH(
+  req: NextRequest,
+  ) {
+  const url = new URL(req.url);
+  const id = url.pathname.split("/").pop();
+
+  if (!id) {
+    return NextResponse.json({ error: "Transaction ID is required" }, { status: 400 })
+  }
+  
   await connectDB()
   const body = await req.json()
   const updated = await Transaction.findByIdAndUpdate(id, body, { new: true })
