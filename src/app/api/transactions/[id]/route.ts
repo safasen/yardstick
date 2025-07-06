@@ -2,13 +2,19 @@ import { connectDB } from "@/lib/mongo"
 import { Transaction } from "@/lib/models/Transaction"
 import { NextRequest, NextResponse } from "next/server"
 
+type Context = {
+  params: { id: string }
+}
+
 export async function DELETE(
   req: NextRequest,
-  { params }: { params: { id: string } }
+  context: Context
 ) {
   await connectDB()
 
-  const deleted = await Transaction.findByIdAndDelete(params.id)
+  const { id} = context.params
+
+  const deleted = await Transaction.findByIdAndDelete(id)
 
   if (!deleted) {
     return NextResponse.json({ error: "Transaction not found" }, { status: 404 })
