@@ -8,11 +8,11 @@ type Context = {
 
 export async function DELETE(
   req: NextRequest,
-  context: Context
+  context: any 
 ) {
   await connectDB()
 
-  const { id} = context.params
+  const { id} = context.params.id
 
   const deleted = await Transaction.findByIdAndDelete(id)
 
