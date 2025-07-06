@@ -2,17 +2,17 @@ import { connectDB } from "@/lib/mongo"
 import { Transaction } from "@/lib/models/Transaction"
 import { NextRequest, NextResponse } from "next/server"
 
-type Context = {
+interface Context {
   params: { id: string }
 }
 
 export async function DELETE(
   req: NextRequest,
-  context: any 
+  context: Context
 ) {
   await connectDB()
 
-  const { id} = context.params.id
+  const { id} = context.params
 
   const deleted = await Transaction.findByIdAndDelete(id)
 
