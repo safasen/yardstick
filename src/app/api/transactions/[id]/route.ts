@@ -2,17 +2,20 @@ import { connectDB } from "@/lib/mongo"
 import { Transaction } from "@/lib/models/Transaction"
 import { NextRequest, NextResponse } from "next/server"
 
-interface Context {
-  params: { id: string }
-}
+
 
 export async function DELETE(
-  req: NextRequest,
-  context: Context
+  req: NextRequest
 ) {
-  await connectDB()
 
-  const { id} = context.params
+  const url = new URL(req.url);
+  const id = url.pathname.split("/").pop();
+
+  
+  if (!id) {
+    return NextResponse.json({ error: "Transaction ID is required" }, { status: 400 })
+  }
+  await connectDB()
 
   const deleted = await Transaction.findByIdAndDelete(id)
 
