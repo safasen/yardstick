@@ -1,6 +1,6 @@
 import { connectDB } from "@/lib/mongo"
 import { Transaction } from "@/lib/models/Transaction"
-import { NextRequest, NextResponse } from "next/server"
+import { NextResponse } from "next/server"
 
 export async function DELETE(
   context: { params: { id: string } }
