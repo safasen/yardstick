@@ -42,7 +42,6 @@ const CATEGORIES = [
 ]
 export default function Home() {
   const [transactions, setTransactions] = useState<Transaction[]>([])
-  const [loading, setLoading] = useState(true)
   const [isDialogOpen, setIsDialogOpen] = useState(false)
   const [editingTransaction, setEditingTransaction] = useState<Transaction | null>(null)
 
@@ -54,8 +53,6 @@ export default function Home() {
         setTransactions(data)
       } catch (err) {
         console.error("Failed to load transactions", err)
-      } finally {
-        setLoading(false)
       }
     }
   
@@ -217,7 +214,7 @@ export default function Home() {
                 </div>
               </CardContent>
             </Card>
-            {categoryBreakdown.length > 0 && categoryBreakdown.slice(0, 3).map((item, index) => (
+            {categoryBreakdown.length > 0 && categoryBreakdown.slice(0, 3).map((item) => (
               <Card key={item.category}>
                 <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                   <CardTitle className="text-sm font-medium">

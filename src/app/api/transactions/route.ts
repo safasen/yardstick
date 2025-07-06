@@ -1,6 +1,17 @@
 import { connectDB } from "@/lib/mongo"
 import { Transaction } from "@/lib/models/Transaction"
 import { NextResponse } from "next/server"
+import { Types } from "mongoose"
+
+interface RawTransactionFromDB {
+  _id: Types.ObjectId | string
+  amount: number
+  date: string
+  description: string
+  type: "income" | "expense"
+  category?: string
+  __v?: number
+}
 
 export async function POST(req: Request) {
   await connectDB()
@@ -16,10 +27,10 @@ export async function POST(req: Request) {
 
 export async function GET() {
   await connectDB()
-  const transactions = await Transaction.find().lean().sort({ date: -1 })
-  const normalized = transactions.map((t:any) => ({
+  const transactions = await Transaction.find().lean().sort({ date: -1 }) as RawTransactionFromDB[]
+  const normalized = transactions.map((t) => ({
     ...t,
-    id: t._id.toString(),   
+    id: (typeof t._id === "string" ? t._id : t._id.toString()),   
     _id: undefined,         
     __v: undefined,         
   }))
